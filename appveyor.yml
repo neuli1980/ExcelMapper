@@ -24,7 +24,10 @@ test_script:
           dotnet sonarscanner end /d:sonar.login="$env:sonar_token"
       }
   - pip install codecov
-  - codecov -f "coverage.xml"
+  - ps: |
+    $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH
+      Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
+      bash codecov.sh -f "coverage.xml"
 artifacts:
   - path: 'ExcelMapper\**\*.nupkg'
 on_success:
